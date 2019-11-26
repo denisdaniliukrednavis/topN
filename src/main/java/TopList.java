@@ -20,8 +20,10 @@ public class TopList {
         use threads for sorting
      */
     public static List<Integer> topN(Stream<Integer> input, Integer n) {
-        if (input == null) return new ArrayList<>();
-        if (n == null) n = N;
+        if (input == null)
+            return new ArrayList<>();
+        if (n == null)
+            n = N;
 
         return input
                 .parallel()

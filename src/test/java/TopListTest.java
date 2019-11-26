@@ -15,8 +15,8 @@ public class TopListTest {
     private static List<Integer> testArray = null;
     private static Integer maxN = 100000000;
 
-    @Before
-    public void setUp() {
+    @Test
+    public void topN() {
         long tStart = System.currentTimeMillis();
         System.out.println("SetUp test data...");
 
@@ -24,13 +24,34 @@ public class TopListTest {
         Collections.shuffle(testArray);
 
         System.out.println("Done in " + (System.currentTimeMillis() - tStart) + " ms");
-    }
 
-    @Test
-    public void topN() {
         testArray = TopList.topN(testArray.stream(), 10);
 
         Assert.assertEquals(testArray.get(0), (Integer) (maxN-1));
         Assert.assertEquals(testArray.get(1), (Integer) (maxN-2));
+    }
+
+    @Test
+    public void topNEmpty() {
+        testArray = TopList.topN(null, 10);
+
+        Assert.assertNotNull(testArray);
+        Assert.assertEquals(testArray.size(), 0);
+    }
+
+    @Test
+    public void topNDefault() {
+        long tStart = System.currentTimeMillis();
+        System.out.println("SetUp test data...");
+
+        testArray = Stream.iterate(0, value -> value + 1).limit(100).collect(Collectors.toList());
+        Collections.shuffle(testArray);
+
+        System.out.println("Done in " + (System.currentTimeMillis() - tStart) + " ms");
+
+        testArray = TopList.topN(testArray.stream(), null);
+
+        Assert.assertNotNull(testArray);
+        Assert.assertEquals(testArray.size(), 10);
     }
 }
